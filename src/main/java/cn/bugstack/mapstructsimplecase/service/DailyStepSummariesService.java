@@ -26,8 +26,13 @@ public class DailyStepSummariesService {
         entity.setUserId(currentUserId());
         entity.setCreatedTime(LocalDateTime.now());
         entity.setUpdatedTime(LocalDateTime.now());
-        dailyStepSummariesMapper.insert(entity);
-        return entity.getId();
+        // MyBatis-Plus insert 方法会自动回填 ID
+        int result = dailyStepSummariesMapper.insert(entity);
+        if (result > 0 && entity.getId() != null) {
+            return entity.getId();
+        } else {
+            throw new RuntimeException("创建失败，ID未生成");
+        }
     }
     public void update(DailyStepUpdateForm dailyStepUpdateForm){
         DailyStepSummaries entity = dailyStepSummariesMapper.selectById(dailyStepUpdateForm.getId());

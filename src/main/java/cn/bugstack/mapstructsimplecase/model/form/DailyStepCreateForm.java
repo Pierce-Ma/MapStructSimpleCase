@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ public class DailyStepCreateForm implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotNull
-    private Integer recordDate;
+    private LocalDate recordDate;
     @NotNull
     private BigDecimal totalDuration;
 

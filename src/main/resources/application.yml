@@ -1,15 +1,37 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS testdb
     driver-class-name: org.h2.Driver
     username: sa
     password:
+    # 初始化数据库脚本
+    sql:
+      init:
+        mode: always
+        schema-locations: classpath:schema.sql
+        continue-on-error: true
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none  # 改为 none，使用 SQL 脚本初始化
     show-sql: true
+  
+  # Jackson 配置（处理 LocalDateTime 序列化）
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
   h2:
     console:
       enabled: true
       path: /h2
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
